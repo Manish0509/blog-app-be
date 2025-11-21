@@ -28,3 +28,14 @@ export async function deleteBlogByIdService(id) {
 export async function updateBlogByIdService(id, data) {
   return await Blog.findByIdAndUpdate(id, data, { new: true });
 }
+
+export async function getBlogBySlugService(slug) {
+  return await Blog.findOne({ slug });
+}
+
+export async function updateBlogBySlugService(slug, data) {
+  return await Blog.findOneAndUpdate({ slug }, data, {
+    new: true,
+    runValidators: true,
+  });
+}

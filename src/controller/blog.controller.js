@@ -4,6 +4,8 @@ import {
   getPaginatedBlogsService,
   deleteBlogByIdService,
   updateBlogByIdService,
+  getBlogBySlugService,
+  updateBlogBySlugService,
 } from "../service/blog.service.js";
 
 export async function postBlog(req, res) {
@@ -52,6 +54,34 @@ export async function updateBlogById(req, res) {
   try {
     const updated = await updateBlogByIdService(req.params.id, req.body);
     if (!updated) return res.status(404).json({ message: "Blog not found" });
+    res.json(updated);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+}
+
+export async function getBlogBySlug(req, res) {
+  try {
+    const blog = await getBlogBySlugService(req.params.slug);
+
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+
+    res.json(blog);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+}
+
+export async function updateBlogBySlug(req, res) {
+  try {
+    const updated = await updateBlogBySlugService(req.params.slug, req.body);
+
+    if (!updated) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+
     res.json(updated);
   } catch (err) {
     res.status(400).json({ message: err.message });
